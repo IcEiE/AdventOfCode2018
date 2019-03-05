@@ -25,33 +25,28 @@ def part1():
     return (np.sum(matrix >= 2), matrix)
 
 def part2(matrix):
-    assert matrix != (0,), "Numpy array is empty"
+    assert matrix.shape != (0,), "Numpy array is empty"
     for line in data:
-        rows, cols = 0, 0
         #Get values from string
         ID = int(line.split()[0].replace('#', ''))
         coord = list(map(int, line.split()[2].replace(':','').split(',')))
         kernel = list(map(int, line.split()[3].split('x')))
 
-        rows = int(coord[0]+kernel[0])
-        cols = int(coord[1]+kernel[1])
+        endRow = int(coord[0]+kernel[0])
+        endCol = int(coord[1]+kernel[1])
         
-        currMatrix = np.ones((kernel))
-        checkMatrix = matrix[coord[0]:rows, coord[1]:cols]
-        assert currMatrix.shape == checkMatrix.shape, "Compared matrix is not of same size"
-        if currMatrix.shape != (1, 1) and (currMatrix == checkMatrix).all():
+        #Check if claim don't overlap
+        elfClaim = matrix[coord[0]:endRow, coord[1]:endCol]
+        if elfClaim .shape != (1, 1) and (elfClaim  == 1).all():
             return ID
-        else:
-            return ID if currMatrix == checkMatrix else None
-        
-    return
+        elif elfClaim .shape == (1, 1) and elfClaim  == 1:
+            return ID
     
 
 if __name__ == '__main__':
     with open('input.txt', 'r') as f:
         data = f.readlines()
-    summ , matrix= part1()
-    print (summ)
+    summ , matrix = part1()
     print(f'Answer to part 1 is {summ}')
     ID = part2(matrix)
     print(f'Answer to part 2 is {ID}')
